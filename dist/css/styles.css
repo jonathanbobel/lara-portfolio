@@ -1,0 +1,30 @@
+nav.navbar-default {
+  background-color: #f05622;
+  font-size: 1.4em;
+  padding-top: 1em;
+  text-transform: uppercase;
+  border: 0; }
+  nav.navbar-default .container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center; }
+    nav.navbar-default .container .navbar-brand {
+      margin-left: 0;
+      font-size: 2.4em;
+      margin-bottom: 1em; }
+      nav.navbar-default .container .navbar-brand:hover {
+        color: white; }
+  nav.navbar-default .navbar-brand, nav.navbar-default .navbar-nav > li > a {
+    color: white;
+    font-family: "Rokkitt", serif; }
+  nav.navbar-default .navbar-nav > li > a {
+    padding: 7px 20px 5px; }
+    nav.navbar-default .navbar-nav > li > a:hover, nav.navbar-default .navbar-nav > li > a:focus {
+      background-color: white; }

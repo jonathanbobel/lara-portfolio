@@ -1,0 +1,75 @@
+// HEADER	
+
+nav.navbar-default {
+	background-color: $header-orange;
+	font-size: 1.4em; 
+	padding-top: 1em;
+	text-transform: uppercase;
+	border: 0; 
+	padding-bottom: 0;
+	position: relative; 
+	z-index: 2;
+
+	@media (max-width: 580px) {
+		padding-bottom: 1em;
+	}
+	
+	.container {
+		display: flex;
+	    flex-direction: column;
+	    align-items: center;
+
+	    .navbar-brand {
+			margin: 0; 
+			font-size: 2.4em; 
+			margin-bottom: 1em; 
+
+			@media (max-width: 580px) {
+				margin-bottom: 0.2em;
+				line-height: 1;
+			}
+
+			&:hover {
+				color: white; 
+			}
+		}
+	}
+
+	.navbar-brand, .navbar-nav>li>a {
+		color: white;
+		font-family: $rokkitt; 
+	}
+
+	.navbar-nav {
+		flex-direction: row; 
+
+		@media (max-width: 580px) {
+			flex-direction: column; 
+			text-align: center; 
+		}
+
+		&>li>a {
+			padding: 7px 20px 5px; 
+
+			&:hover, &:focus {
+				background-color: white; 
+				color: black;
+    			text-decoration: none;
+			}
+
+		}
+	}
+}
+
+.sticky {
+  position: fixed !important;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  border-top: 0;
+  background-color: $header-orange;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

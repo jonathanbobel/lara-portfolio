@@ -1,0 +1,157 @@
+#main .container {
+  padding: 3em 0;
+  max-width: 880px;
+
+  @media (max-width: 580px) {
+    .row .col-sm-4 {
+      margin: 0 2em;
+    }
+  }
+
+  h1 {
+    font-family: $roboto;
+    font-size: 2em;
+    text-align: left;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+  }
+
+  p {
+    font-family: $roboto;
+    font-size: 1.2em;
+    text-align: left;
+    line-height: 1.4;
+
+    @media (max-width: 580px) {
+      font-size: 1em;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .row {
+    @media (max-width: 580px) {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  .row .image {
+    img {
+      width: 100%;
+      margin: 0 0 2em;
+      &.border {
+        border: 1px solid grey;
+        padding: 1%;
+      }
+      &.half {
+        width: 50%;
+        margin: 0 25% 2em;
+      }
+      &.three-4 {
+        width: 74%;
+        margin: 0 13% 2em;
+      }
+    }
+  }
+}
+
+.portfolio {
+  .row .col-sm-4 {
+    padding: 10px;
+
+    &:before {
+      content: "";
+      float: left;
+      padding-top: 100%;
+    }
+
+    a {
+      display: block;
+      height: 100%;
+      background-size: 100% !important;
+      border: 1px solid grey;
+      padding-bottom: 100%;
+
+      &.antidote {
+        background: url(../images/Antidote-SQ.jpg) no-repeat;
+      }
+      &.annual-2019 {
+        background: url(../images/DT-2019-Annual-Report-SQ.png) no-repeat;
+      }
+      &.conference {
+        background: url(../images/Conference-SQ.png) no-repeat;
+      }
+      &.tire-sales {
+        background: url(../images/DT-Sales-Analysis-SQ.png) no-repeat;
+      }
+      &.innovation {
+        background: url(../images/DT-Innovation-Contest-SQ.png) no-repeat;
+      }
+      &.hyn {
+        background: url(../images/DT-HYN-Service-Guide-SQ.png) no-repeat;
+      }
+      &.annual {
+        background: url(../images/DT-2016-Annual-Report-SQ.png) no-repeat;
+      }
+      &.ymca {
+        background: url(../images/YMCA-SQ.png) no-repeat;
+      }
+      &.burr {
+        background: url(../images/Burr-Ridge-SQ.png) no-repeat;
+      }
+      &.novar {
+        background: url(../images/Novar-SQ.png) no-repeat;
+      }
+      &.rrcd {
+        background: url(../images/RRCD-SQ.png) no-repeat;
+      }
+      &.playground {
+        background: url(../images/UCC-SQ.png) no-repeat;
+      }
+      &.hearing {
+        background: url(../images/CLE-Hearing-SQ.png) no-repeat;
+      }
+      &.new_building {
+        background: url(../images/DT-New-Building-SQ.png) no-repeat;
+      }
+      &.annual_old {
+        background: url(../images/DT-2015-Annual-Report-SQ.png) no-repeat;
+      }
+
+      // Donations
+      &.blm {
+        background: url(../images/Donations/BLM-SQ.jpg) no-repeat;
+      }
+      &.blkpnk {
+        background: url(../images/Donations/Black&Pink-SQ.jpg) no-repeat;
+      }
+      &.navajo {
+        background: url(../images/Donations/NavajoHopi-SQ.jpg) no-repeat;
+      }
+      &.preterm {
+        background: url(../images/Donations/PretermCLE-SQ.jpg) no-repeat;
+      }
+      &.loveland {
+        background: url(../images/Donations/LovelandFoundation-SQ.jpg) no-repeat;
+      }
+      &.swop {
+        background: url(../images/Donations/SWOP-SQ.jpg) no-repeat;
+      }
+      &.bgc {
+        background: url(../images/Donations/BlackGirlsCode-SQ.jpg) no-repeat;
+      }
+      &.census {
+        background: url(../images/Donations/Census-SQ.jpg) no-repeat;
+      }
+      &.vote {
+        background: url(../images/Donations/Vote-SQ.jpg) no-repeat;
+      }
+    }
+  }
+}

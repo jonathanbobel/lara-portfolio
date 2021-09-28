@@ -1,0 +1,24 @@
+#main .container {
+  ul {
+    text-align: left !important;
+    font-family: $roboto;
+    font-size: 1.2em;
+    text-align: left;
+    line-height: 1.4;
+    list-style: none;
+    padding-left: 0;
+    @media (max-width: 580px) {
+      font-size: 1em;
+    }
+    li:before {
+      content: "-";
+      margin-right: 10px;
+    }
+    &.check {
+      li:before {
+        content: "✓";
+        margin-right: 10px;
+      }
+    }
+  }
+}

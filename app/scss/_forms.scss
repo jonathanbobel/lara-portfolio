@@ -1,0 +1,47 @@
+#main .container {
+  &.contact {
+    max-width: 660px;
+    form {
+      label {
+        font-family: $rokkitt;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-left: 0;
+        margin-bottom: 0;
+
+        @media (max-width: 580px) {
+          margin-left: 15px;
+        }
+      }
+      input,
+      textarea {
+        font-family: $rokkitt;
+        border-radius: 0;
+        background: rgba(0, 0, 0, 0.1);
+        &.ng-dirty {
+          background-color: white;
+        }
+      }
+      button.btn {
+        background: #0c6482;
+        border-radius: 0;
+        color: white;
+        font-family: $rokkitt;
+        text-transform: uppercase;
+        font-size: 1.2em;
+      }
+    }
+    p.result {
+      font-family: $rokkitt;
+    }
+    .contact-link {
+      color: #0c6482;
+      font-weight: 600;
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

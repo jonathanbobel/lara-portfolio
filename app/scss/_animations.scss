@@ -1,0 +1,39 @@
+.slidedown {
+    position: absolute;
+    top: 200px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+
+}
+.slidedown.ng-enter,
+.slidedown.ng-leave {
+    -webkit-transition: all 0.7s ease;
+    transition: all 0.7s ease;
+}
+.slidedown.ng-enter {
+    top: -100%;
+    opacity: 0;
+    &.portfolio-view {
+        //top: 100% !important;
+    }
+}
+.slidedown.ng-enter-active {
+    top: 200px;
+    opacity: 1;
+}
+.slidedown.ng-leave {
+    top: 200px;
+    opacity: 1; 
+}
+.slidedown.ng-leave-active {
+    top: 100%;
+    opacity: 0;
+    &.portfolio-view {
+        //top: -100% !important;
+    }
+}
+
+
+
