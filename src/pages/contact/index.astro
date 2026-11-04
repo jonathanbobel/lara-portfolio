@@ -1,0 +1,283 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../lib/site';
+
+// Web3Forms emails each submission to the inbox the access key was created with (lara.schmida@gmail.com).
+// The key is public by design, so it's fine for it to end up in the page.
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+if (!accessKey) {
+  console.warn('[contact] PUBLIC_WEB3FORMS_KEY is not set — the contact form will fall back to email links.');
+}
+const thanksUrl = new URL('/contact/thanks', Astro.site).href;
+---
+
+<Base title="Contact" description="Start a project or get a quote — send Lara Bobel a message." hideCta>
+  <section class="wrap contact">
+    <div class="intro">
+      <p class="eyebrow">Contact</p>
+      <h1>Let’s get in touch.</h1>
+      <p class="lede">
+        Interested in starting a project or getting a quote? I would love to collaborate and get your project started.
+      </p>
+
+      <ul class="other">
+        <li>
+          <span>Email</span>
+          <a class="link" href={`mailto:${site.email}?subject=Portfolio%20Contact`}>{site.email}</a>
+        </li>
+        <li>
+          <span>LinkedIn</span>
+          <a class="link" href={site.linkedin} target="_blank" rel="noopener">Lara Bobel ↗</a>
+        </li>
+      </ul>
+    </div>
+
+    <form
+      class="form"
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      data-contact-form
+      data-ready={accessKey ? 'true' : 'false'}
+    >
+      <input type="hidden" name="access_key" value={accessKey} />
+      <input type="hidden" name="from_name" value="larabobel.com" />
+      <input type="hidden" name="redirect" value={thanksUrl} />
+      <!-- Honeypot: bots fill this in, people never see it. -->
+      <input type="checkbox" name="botcheck" style="display: none" tabindex="-1" autocomplete="off" />
+
+      <div class="row">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="topic">What can I help with?</label>
+        <select id="topic" name="topic">
+          <option>Full-time role</option>
+          <option>Freelance project</option>
+          <option>Brand identity</option>
+          <option>Just saying hi</option>
+          <option>Something else</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="subject">Subject</label>
+        <input id="subject" name="subject" type="text" required />
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+      </div>
+
+      <div class="submit">
+        <button class="btn btn-primary" type="submit">
+          Send message <span aria-hidden="true">→</span>
+        </button>
+        <p class="status" role="status" aria-live="polite" data-status></p>
+      </div>
+    </form>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    padding-block: clamp(3rem, 8vw, 5.5rem) clamp(4rem, 10vw, 7rem);
+    align-items: start;
+  }
+
+  h1 {
+    font-size: clamp(2.75rem, 7vw, 4.75rem);
+  }
+
+  .lede {
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    color: var(--ink-soft);
+  }
+
+  .other {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+  }
+
+  .other li {
+    display: grid;
+    padding: 1rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .other span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .other a {
+    font-size: 1.15rem;
+    word-break: break-word;
+  }
+
+  .form {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-top: 6px solid var(--orange);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  label {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+    transition:
+      border-color 0.2s,
+      background 0.2s,
+      box-shadow 0.2s;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 9rem;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: #fff;
+    box-shadow: 0 0 0 3px var(--orange-tint);
+  }
+
+  input:user-invalid,
+  textarea:user-invalid {
+    border-color: #b42318;
+  }
+
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .status {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .status[data-state='success'] {
+    color: #1a7f4b;
+  }
+
+  .status[data-state='error'] {
+    color: #b42318;
+  }
+
+  @media (max-width: 860px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { site } from '../../lib/site';
+
+  function initContactForm() {
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (!form) return;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+    const show = (state: 'success' | 'error' | 'pending', html: string) => {
+      status.dataset.state = state;
+      status.innerHTML = html;
+    };
+    const fallback = `Please email me directly at <a class="link" href="mailto:${site.email}">${site.email}</a>.`;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (form.dataset.ready !== 'true') {
+        show('error', `The form isn’t connected yet. ${fallback}`);
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      delete data.redirect; // only used by the no-JavaScript fallback
+      data.subject = `[Portfolio] ${data.subject}`;
+      data.replyto = data.email;
+
+      button.disabled = true;
+      show('pending', 'Sending…');
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || !json.success) throw new Error(json.message || res.statusText);
+
+        form.reset();
+        show('success', 'Thanks! I’ll get back to you as soon as possible.');
+      } catch (err) {
+        console.error('[contact]', err);
+        show('error', `Sorry — your message didn’t send. ${fallback}`);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', initContactForm);
+</script>

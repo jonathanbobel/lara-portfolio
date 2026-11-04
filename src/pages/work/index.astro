@@ -1,0 +1,129 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getWork } from '../../lib/content';
+import { categories } from '../../content.config';
+
+const work = await getWork();
+const counts = Object.fromEntries(
+  categories.map((c) => [c, work.filter((p) => p.data.categories.includes(c)).length]),
+);
+const filters = categories.filter((c) => counts[c] > 0);
+---
+
+<Base title="Work" description="Brand identities, campaigns, annual reports, and print design by Lara Bobel.">
+  <header class="page-head wrap">
+    <p class="eyebrow">Portfolio</p>
+    <h1>Work</h1>
+    <p class="lede">
+      Identities, campaigns, annual reports, events, and print — for in-house teams, agencies, and small businesses.
+    </p>
+  </header>
+
+  <section class="wrap work" aria-label="Projects">
+    <div class="filters" role="group" aria-label="Filter projects by category" hidden>
+      <button type="button" data-filter="all" aria-pressed="true">All <span>{work.length}</span></button>
+      {
+        filters.map((c) => (
+          <button type="button" data-filter={c} aria-pressed="false">
+            {c} <span>{counts[c]}</span>
+          </button>
+        ))
+      }
+    </div>
+    <p class="visually-hidden" aria-live="polite" data-filter-status></p>
+
+    <ul class="card-grid">
+      {work.map((project, i) => <ProjectCard project={project} eager={i < 3} />)}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .work {
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .filters[hidden] {
+    display: none;
+  }
+
+  .filters button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.55em 1.1em;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    font: 600 0.9rem/1 var(--font-body);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      color 0.2s;
+  }
+
+  .filters button span {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .filters button:hover {
+    border-color: var(--orange);
+  }
+
+  .filters button[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+
+  .filters button[aria-pressed='true'] span {
+    color: #cfc6bc;
+  }
+</style>
+
+<script>
+  function initFilters() {
+    const group = document.querySelector<HTMLElement>('.filters');
+    if (!group) return;
+    const buttons = [...group.querySelectorAll<HTMLButtonElement>('button')];
+    const cards = [...document.querySelectorAll<HTMLElement>('.card[data-categories]')];
+    const status = document.querySelector<HTMLElement>('[data-filter-status]');
+
+    const apply = (filter: string) => {
+      let shown = 0;
+      cards.forEach((card) => {
+        const match = filter === 'all' || card.dataset.categories!.split('|').includes(filter);
+        card.hidden = !match;
+        if (match) shown++;
+      });
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+      if (status) status.textContent = `Showing ${shown} project${shown === 1 ? '' : 's'}`;
+
+      const url = new URL(location.href);
+      if (filter === 'all') url.searchParams.delete('category');
+      else url.searchParams.set('category', filter);
+      history.replaceState(history.state, '', url);
+    };
+
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter!)));
+    group.hidden = false;
+
+    const initial = new URLSearchParams(location.search).get('category');
+    if (initial && buttons.some((b) => b.dataset.filter === initial)) apply(initial);
+  }
+
+  document.addEventListener('astro:page-load', initFilters);
+</script>

@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import blm from '../assets/donations/blm.jpg';
+import blackAndPink from '../assets/donations/black-and-pink.jpg';
+import navajoHopi from '../assets/donations/navajohopi.jpg';
+import preterm from '../assets/donations/pretermcle.jpg';
+import loveland from '../assets/donations/lovelandfoundation.jpg';
+import swop from '../assets/donations/swop.jpg';
+import bgc from '../assets/donations/blackgirlscode.jpg';
+import census from '../assets/donations/census.jpg';
+import vote from '../assets/donations/vote.jpg';
+
+const orgs = [
+  { name: 'Black Lives Matter', href: 'https://secure.actblue.com/donate/ms_blm_homepage_2019', img: blm },
+  { name: 'Black & Pink', href: 'https://www.giveoutday.org/organization/Black-And-Pink', img: blackAndPink },
+  { name: 'Navajo & Hopi Families COVID-19 Relief', href: 'https://bit.ly/2Z3nQkc', img: navajoHopi },
+  { name: 'Preterm Cleveland', href: 'https://www.preterm.org/support-us', img: preterm },
+  { name: 'The Loveland Foundation', href: 'https://thelovelandfoundation.org/', img: loveland },
+  { name: 'SWOP USA', href: 'https://swopusa.org/donate/', img: swop },
+  { name: 'Black Girls Code', href: 'https://www.blackgirlscode.com/', img: bgc },
+  { name: 'U.S. Census', href: 'https://2020census.gov/en.html', img: census },
+  { name: 'Vote.org', href: 'https://www.vote.org/absentee-ballot/', img: vote },
+];
+---
+
+<Base title="Donations" description="Organizations Lara Bobel supports — consider donating if you’re able.">
+  <header class="page-head wrap">
+    <p class="eyebrow">Giving back</p>
+    <h1>Donations</h1>
+    <p class="lede">A few organizations doing important work. If you’re able, please consider supporting them.</p>
+  </header>
+
+  <section class="wrap body">
+    <ul class="card-grid">
+      {
+        orgs.map(({ name, href, img }) => (
+          <li>
+            <a class="org" href={href} target="_blank" rel="noopener">
+              <div class="thumb">
+                <Image src={img} alt="" widths={[300, 600]} sizes="(max-width: 640px) 100vw, 360px" />
+              </div>
+              <span class="name">
+                {name} <span aria-hidden="true">↗</span>
+                <span class="visually-hidden">(opens in a new tab)</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .body {
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+
+  .org {
+    display: block;
+    text-decoration: none;
+  }
+
+  .thumb {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    transition:
+      transform 0.35s var(--ease),
+      border-color 0.35s;
+  }
+
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .org:hover .thumb {
+    transform: translateY(-4px);
+    border-color: var(--orange);
+  }
+
+  .name {
+    display: block;
+    padding-top: 0.8rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .org:hover .name {
+    color: var(--orange-deep);
+  }
+</style>

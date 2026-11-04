@@ -1,0 +1,313 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+import portrait from '../assets/about/lara.jpg';
+
+const experience = [
+  { place: 'Dealer Tire', years: '2011 – 2020', note: 'In-house creative' },
+  { place: 'Antidote Functional Therapies', years: '2017 – 2019', note: 'Brand identity & web' },
+  { place: 'The Adcom Group', years: '2004 – 2019', note: 'Agency creative' },
+  { place: 'Bisig Impact Group', years: 'Summer 2003', note: 'Design' },
+];
+
+const offers = [
+  'Full-time creative leader',
+  'Freelance designer',
+  'Brand identity or guidelines',
+  'Cohesive pitch and problem solver',
+  'Ideation or brainstorm session',
+];
+
+const interests = [
+  'Backpacking + camping',
+  'OrangeTheory',
+  'Scooters + bicycles',
+  'Snuggling my pets',
+  'Roller-skating',
+  'Cross-stitching',
+  'Journaling',
+  'Birding',
+  'CLE sports',
+  'Local breweries',
+  'Travel',
+];
+---
+
+<Base title="About" description="Lara Bobel is an art director and graphic designer. Experience, services, and a bit about life outside of design." image={portrait.src}>
+  <section class="intro wrap">
+    <div class="text">
+      <p class="eyebrow">About</p>
+      <h1>Hello, I’m Lara.</h1>
+      <p class="lede">
+        I’m an art director and graphic designer who loves a good brief and a tight deadline. Efficient and
+        deadline-driven, I can exceed any project expectation.
+      </p>
+      <p>
+        I’m currently looking for a full-time Art Director role — but don’t let that stop you from reaching out for a
+        quick conversation about any of the other services I offer.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/contact">Let’s talk <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href={site.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+    <div class="portrait">
+      <Image src={portrait} alt="Portrait of Lara Bobel" widths={[400, 800]} sizes="(max-width: 860px) 80vw, 420px" loading="eager" />
+    </div>
+  </section>
+
+  <section class="section wrap columns">
+    <div>
+      <h2>Experience</h2>
+      <ol class="timeline">
+        {
+          experience.map(({ place, years, note }) => (
+            <li>
+              <span class="years">{years}</span>
+              <strong>{place}</strong>
+              <span class="note">{note}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <h3 class="edu-head">Education</h3>
+      <p class="edu"><strong>BFA, Visual Communication Design</strong><br />Kent State University</p>
+    </div>
+
+    <div>
+      <h2>What I offer</h2>
+      <p>If you answer yes to any of these, reach out and let’s start collaborating! Do you need a…</p>
+      <ul class="checks">
+        {offers.map((o) => <li>{o}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap off">
+      <div>
+        <p class="eyebrow">Off the clock</p>
+        <h2>When I’m not flexing my creative muscle…</h2>
+        <p>
+          I have a lot of hobbies and interests. I recently started birding, which makes all outdoor activities more
+          fun — and this is just the beginning.
+        </p>
+      </div>
+      <ul class="chips">
+        {interests.map((i) => <li>{i}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section wrap give">
+    <div>
+      <p class="eyebrow">Giving back</p>
+      <h2>Causes I support</h2>
+      <p>A handful of organizations doing important work. If you’re able, consider supporting them too.</p>
+    </div>
+    <a class="arrow-link" href="/donations">See the list <span aria-hidden="true">→</span></a>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    padding-block: clamp(3rem, 8vw, 5.5rem);
+  }
+
+  h1 {
+    font-size: clamp(2.75rem, 7vw, 5rem);
+  }
+
+  .lede {
+    font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+    color: var(--ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .portrait {
+    position: relative;
+    max-width: 420px;
+    justify-self: end;
+  }
+
+  .portrait::before {
+    content: '';
+    position: absolute;
+    inset: -1rem 1rem 1rem -1rem;
+    border: 2px solid var(--orange);
+    border-radius: var(--radius);
+  }
+
+  .portrait :global(img) {
+    position: relative;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0 0 2rem;
+    padding: 0;
+    border-left: 2px solid var(--line);
+  }
+
+  .timeline li {
+    position: relative;
+    display: grid;
+    padding: 0 0 1.5rem 1.5rem;
+  }
+
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 0.35rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--orange);
+  }
+
+  .years {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+  }
+
+  .timeline strong {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+
+  .note {
+    color: var(--muted);
+  }
+
+  .edu-head {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .checks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .checks li {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  .checks li::before {
+    content: '✓';
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+  }
+
+  .band {
+    background: var(--orange-tint);
+  }
+
+  .off {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chips li {
+    padding: 0.5em 1.1em;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1.5px solid rgb(194 65 12 / 0.25);
+    font-weight: 600;
+    transition:
+      transform 0.2s var(--ease),
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .chips li:hover {
+    transform: rotate(-2deg) translateY(-2px);
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .give {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .give p:last-child {
+    margin: 0;
+    max-width: 36rem;
+  }
+
+  @media (max-width: 860px) {
+    .intro,
+    .columns,
+    .off {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait {
+      justify-self: start;
+      max-width: 80%;
+      order: -1;
+      margin-left: 1rem;
+    }
+  }
+</style>

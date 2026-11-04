@@ -1,0 +1,116 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getCaseStudies } from '../../lib/content';
+
+export const getStaticPaths = (async () => {
+  const studies = await getCaseStudies();
+  return studies.map((study) => ({ params: { slug: study.id }, props: { study } }));
+}) satisfies GetStaticPaths;
+
+const { study } = Astro.props;
+const { title, client, summary, year, role, cover, coverAlt } = study.data;
+const { Content } = await render(study);
+const ogImage = await getImage({ src: cover, width: 1200, format: 'jpg' });
+---
+
+<Base title={title} description={summary} image={ogImage.src}>
+  <article class="study">
+    <header class="wrap head">
+      <a class="arrow-link back" href="/case-studies"><span aria-hidden="true">←</span> All case studies</a>
+      <p class="eyebrow">{client}</p>
+      <h1>{title}</h1>
+      <p class="lede">{summary}</p>
+      {
+        (year || role) && (
+          <dl class="facts">
+            {role && (
+              <div>
+                <dt>Role</dt>
+                <dd>{role}</dd>
+              </div>
+            )}
+            {year && (
+              <div>
+                <dt>Year</dt>
+                <dd>{year}</dd>
+              </div>
+            )}
+          </dl>
+        )
+      }
+    </header>
+
+    <div class="wrap">
+      <Image class="cover" src={cover} alt={coverAlt} widths={[800, 1200, 1800]} sizes="(max-width: 1180px) 100vw, 1100px" loading="eager" />
+    </div>
+
+    <div class="wrap">
+      <div class="prose body">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .head {
+    padding-block: 2rem clamp(2rem, 5vw, 3rem);
+  }
+
+  .head .back {
+    margin-bottom: 2.5rem;
+  }
+
+  .head h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    max-width: 20ch;
+  }
+
+  .lede {
+    max-width: 42rem;
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    color: var(--ink-soft);
+  }
+
+  .facts {
+    display: flex;
+    gap: 2.5rem;
+    margin: 1.5rem 0 0;
+  }
+
+  dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0.15rem 0 0;
+  }
+
+  .cover {
+    width: 100%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .body {
+    margin: clamp(2.5rem, 6vw, 4rem) auto clamp(3rem, 8vw, 6rem);
+    font-size: 1.2rem;
+  }
+
+  .body :global(h2) {
+    font-size: clamp(1.75rem, 3.5vw, 2.4rem);
+    margin-top: 2em;
+  }
+
+  .body :global(img) {
+    border-radius: var(--radius);
+    margin-block: 2rem;
+  }
+</style>

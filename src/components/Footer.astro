@@ -1,0 +1,126 @@
+---
+import { nav, site } from '../lib/site';
+
+interface Props {
+  hideCta?: boolean;
+}
+
+const { hideCta = false } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  {
+    !hideCta && (
+      <section class="cta wrap" aria-labelledby="footer-cta">
+        <p class="eyebrow">Have a project in mind?</p>
+        <h2 id="footer-cta">
+          Let’s make something <em>good</em> together.
+        </h2>
+        <a class="btn btn-primary" href="/contact">
+          Start a conversation <span aria-hidden="true">→</span>
+        </a>
+      </section>
+    )
+  }
+
+  <div class="wrap base">
+    <a class="brand" href="/">{site.name}</a>
+    <nav aria-label="Footer">
+      <ul>
+        {
+          nav.map(({ href, label }) => (
+            <li>
+              <a href={href}>{label}</a>
+            </li>
+          ))
+        }
+        <li><a href="/donations">Donations</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+    <ul class="social">
+      <li><a href={`mailto:${site.email}`}>Email</a></li>
+      <li><a href={site.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a></li>
+    </ul>
+    <p class="copy">© {year} {site.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: #f3ede6;
+    margin-top: auto;
+  }
+
+  .cta {
+    padding-block: clamp(3.5rem, 9vw, 6.5rem);
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .cta .eyebrow {
+    color: var(--orange);
+  }
+
+  .cta h2 {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    max-width: 14ch;
+    margin-bottom: 2rem;
+  }
+
+  .cta em {
+    font-style: normal;
+    color: var(--orange);
+  }
+
+  .base {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem 2.5rem;
+    padding-block: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .base a:not(.brand) {
+    text-decoration: none;
+    color: #cfc6bc;
+    transition: color 0.2s;
+  }
+
+  .base a:hover {
+    color: var(--orange) !important;
+  }
+
+  .copy {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: #8f857b;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 760px) {
+    .base {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

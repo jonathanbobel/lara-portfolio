@@ -1,0 +1,326 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getWork } from '../../lib/content';
+
+export const getStaticPaths = (async () => {
+  const work = await getWork();
+  return work.map((project, i) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      prev: work[(i - 1 + work.length) % work.length],
+      next: work[(i + 1) % work.length],
+      position: i + 1,
+      total: work.length,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { project, prev, next, position, total } = Astro.props;
+const { title, client, year, categories, deliverables, images, link } = project.data;
+const { Content } = await render(project);
+const firstText = project.body?.split('\n\n')[0]?.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+const ogImage = await getImage({ src: images[0]?.src ?? project.data.cover, width: 1200, format: 'jpg' });
+const isExternal = link && /^https?:/.test(link.href);
+---
+
+<Base title={title} description={firstText} image={ogImage.src}>
+  <article class="project wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a class="arrow-link back" href="/work"><span aria-hidden="true">←</span> All work</a>
+      <span class="count">{String(position).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
+    </nav>
+
+    <div class="layout">
+      <aside class="info">
+        <p class="eyebrow">{categories.join(' · ')}</p>
+        <h1>{title}</h1>
+
+        <dl class="facts">
+          <div>
+            <dt>Client</dt>
+            <dd>{client}</dd>
+          </div>
+          {
+            year && (
+              <div>
+                <dt>Year</dt>
+                <dd>{year}</dd>
+              </div>
+            )
+          }
+          {
+            deliverables.length > 0 && (
+              <div class="wide">
+                <dt>Deliverables</dt>
+                <dd>{deliverables.join(', ')}</dd>
+              </div>
+            )
+          }
+        </dl>
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        {
+          link && (
+            <a
+              class="btn btn-primary"
+              href={link.href}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener' : undefined}
+              data-astro-reload={isExternal ? undefined : true}
+            >
+              {link.label} <span aria-hidden="true">↗</span>
+            </a>
+          )
+        }
+      </aside>
+
+      <div class="gallery">
+        {
+          images.map((img, i) => (
+            <figure class:list={['shot', img.size, { border: img.border }]}>
+              <Image
+                src={img.src}
+                alt={img.alt}
+                widths={img.size === 'tile' ? [400, 800] : [720, 1080, 1440]}
+                sizes={img.size === 'tile' ? '(max-width: 900px) 50vw, 360px' : '(max-width: 900px) 100vw, 760px'}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="prev" href={`/work/${prev.id}`} rel="prev">
+        <span class="dir"><span aria-hidden="true">←</span> Previous</span>
+        <span class="name">{prev.data.title}</span>
+      </a>
+      <a class="all" href="/work" aria-label="All work">
+        <span class="grid-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      </a>
+      <a class="next" href={`/work/${next.id}`} rel="next">
+        <span class="dir">Next <span aria-hidden="true">→</span></span>
+        <span class="name">{next.data.title}</span>
+      </a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .project {
+    padding-bottom: clamp(3rem, 8vw, 5rem);
+  }
+
+  .crumbs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 2rem;
+  }
+
+  .count {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .info {
+    position: sticky;
+    top: 6.5rem;
+  }
+
+  .info h1 {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+    margin: 1.5rem 0 1.75rem;
+    padding-block: 1.25rem;
+    border-block: 1px solid var(--line);
+  }
+
+  .facts .wide {
+    grid-column: 1 / -1;
+  }
+
+  dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0.15rem 0 0;
+    font-size: 1.05rem;
+  }
+
+  .info .btn {
+    margin-top: 0.5rem;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .shot {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  .shot.tile {
+    grid-column: auto;
+  }
+
+  .shot.three-quarter {
+    width: 75%;
+    justify-self: center;
+  }
+
+  .shot.half {
+    width: 50%;
+    justify-self: center;
+  }
+
+  .shot :global(img) {
+    width: 100%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    background: var(--card);
+  }
+
+  .shot.border :global(img) {
+    border: 1px solid var(--line);
+    padding: 2%;
+    box-shadow: none;
+  }
+
+  /* ---------- Prev / next ---------- */
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 1rem;
+    margin-top: clamp(3rem, 8vw, 5rem);
+    padding-top: 2rem;
+    border-top: 2px solid var(--ink);
+  }
+
+  .pager a {
+    text-decoration: none;
+  }
+
+  .prev,
+  .next {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.5rem 0;
+  }
+
+  .next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .dir {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    line-height: 1.1;
+    transition: color 0.2s;
+  }
+
+  .prev:hover .name,
+  .next:hover .name {
+    color: var(--orange-deep);
+  }
+
+  .all {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    align-self: center;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+
+  .all:hover {
+    border-color: var(--orange);
+    background: var(--orange);
+  }
+
+  .grid-icon {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .grid-icon i {
+    width: 7px;
+    height: 7px;
+    background: var(--ink);
+  }
+
+  .all:hover .grid-icon i {
+    background: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .info {
+      position: static;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .shot.three-quarter,
+    .shot.half {
+      width: 85%;
+    }
+
+    .pager {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .all {
+      display: none;
+    }
+  }
+</style>

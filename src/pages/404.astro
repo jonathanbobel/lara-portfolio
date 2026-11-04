@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found">
+  <section class="wrap lost">
+    <p class="eyebrow">404</p>
+    <h1>This page wandered off.</h1>
+    <p class="lede">The page you’re looking for doesn’t exist or has moved.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/work">See the work <span aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost" href="/">Home</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+
+  h1 {
+    font-size: clamp(2.75rem, 8vw, 5rem);
+  }
+
+  .lede {
+    font-size: 1.3rem;
+    color: var(--ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+</style>

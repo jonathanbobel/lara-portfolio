@@ -1,0 +1,200 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+import { getCaseStudies, getWork } from '../lib/content';
+import portrait from '../assets/about/lara.jpg';
+
+const work = await getWork();
+const featured = work.filter((p) => p.data.featured).slice(0, 6);
+const caseStudies = (await getCaseStudies()).slice(0, 2);
+---
+
+<Base>
+  <section class="hero wrap">
+    <p class="eyebrow">Art Director &amp; Graphic Designer</p>
+    <h1>
+      Hi, I’m Lara.<br />
+      I make brands, campaigns &amp; print that <span class="mark">people notice.</span>
+    </h1>
+    <p class="lede">
+      From brand identities to annual reports to photo shoots with twenty-plus models, I lead creative from the first
+      idea to the finished piece.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/work">See my work <span aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost" href="/contact">Get in touch</a>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="featured-heading">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Selected work</p>
+        <h2 id="featured-heading">A few favorites</h2>
+      </div>
+      <a class="arrow-link" href="/work">All {work.length} projects <span aria-hidden="true">→</span></a>
+    </div>
+    <ul class="card-grid">
+      {featured.map((project, i) => <ProjectCard project={project} eager={i < 3} />)}
+    </ul>
+  </section>
+
+  <section class="section band" aria-labelledby="cs-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Case studies</p>
+          <h2 id="cs-heading">The story behind the work</h2>
+        </div>
+        {
+          caseStudies.length > 0 && (
+            <a class="arrow-link" href="/case-studies">
+              All case studies <span aria-hidden="true">→</span>
+            </a>
+          )
+        }
+      </div>
+      {
+        caseStudies.length > 0 ? (
+          <ul class="cs-grid">
+            {caseStudies.map((study) => (
+              <CaseStudyCard study={study} />
+            ))}
+          </ul>
+        ) : (
+          <div class="coming-soon">
+            <p>
+              In-depth looks at the process — the brief, the thinking, the results — are on their way. In the meantime,{' '}
+              <a class="link" href="/work">browse the portfolio</a>.
+            </p>
+            <a class="arrow-link" href="/case-studies">
+              Learn more <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section wrap about" aria-labelledby="about-heading">
+    <div class="portrait">
+      <Image src={portrait} alt="Lara Bobel" widths={[320, 640]} sizes="(max-width: 760px) 60vw, 320px" />
+    </div>
+    <div>
+      <p class="eyebrow">About</p>
+      <h2 id="about-heading">Efficient, deadline-driven, and a little bit playful.</h2>
+      <p>
+        I’ve spent my career leading creative in-house at Dealer Tire and agency-side at The Adcom Group — designing
+        everything from brand identities to trade show booths. When I’m not designing, I’m probably backpacking, birding,
+        or cheering on a Cleveland team.
+      </p>
+      <a class="arrow-link" href="/about">More about me <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(3.5rem, 10vw, 7.5rem) clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.6rem, 7vw, 5.6rem);
+    max-width: 18ch;
+    margin-bottom: 1.5rem;
+  }
+
+  .mark {
+    color: var(--orange);
+    background: linear-gradient(transparent 70%, var(--orange-tint) 70%);
+    padding-inline: 0.05em;
+  }
+
+  .lede {
+    max-width: 38rem;
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    color: var(--ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .band {
+    background: var(--orange-tint);
+  }
+
+  .cs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .coming-soon {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding: 2rem;
+    border: 2px dashed rgb(194 65 12 / 0.4);
+    border-radius: var(--radius);
+  }
+
+  .coming-soon p {
+    margin: 0;
+    max-width: 44rem;
+    font-size: 1.15rem;
+  }
+
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 320px) 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .about h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    max-width: 20ch;
+  }
+
+  .about p {
+    max-width: 36rem;
+  }
+
+  .portrait {
+    position: relative;
+  }
+
+  .portrait::before {
+    content: '';
+    position: absolute;
+    inset: 1rem -1rem -1rem 1rem;
+    background: var(--orange);
+    border-radius: var(--radius);
+  }
+
+  .portrait :global(img) {
+    position: relative;
+    border-radius: var(--radius);
+  }
+
+  @media (max-width: 760px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait {
+      max-width: 60%;
+    }
+  }
+</style>

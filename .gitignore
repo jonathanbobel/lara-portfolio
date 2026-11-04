@@ -1,0 +1,17 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# env
+.env
+.env.*
+!.env.example
+
+# os / editor
+.DS_Store
+_DS_Store
+.vscode/*
+!.vscode/extensions.json

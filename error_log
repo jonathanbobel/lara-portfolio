@@ -1,1 +1,0 @@
-[15-Jan-2024 11:11:48 UTC] PHP Deprecated:  __autoload() is deprecated, use spl_autoload_register() instead in /home/karatejon37/public_html/lara/phpmailer/PHPMailerAutoload.php on line 45

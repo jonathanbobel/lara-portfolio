@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  study: CollectionEntry<'case-studies'>;
+}
+
+const { study } = Astro.props;
+const { title, client, summary, cover, coverAlt, draft } = study.data;
+---
+
+<li class="cs-card">
+  <a href={`/case-studies/${study.id}`}>
+    <div class="thumb">
+      <Image src={cover} alt={coverAlt} widths={[480, 960]} sizes="(max-width: 900px) 100vw, 560px" />
+    </div>
+    <p class="client">{client}{draft && ' · Draft'}</p>
+    <h3>{title}</h3>
+    <p class="summary">{summary}</p>
+    <span class="arrow-link">Read the case study <span aria-hidden="true">→</span></span>
+  </a>
+</li>
+
+<style>
+  a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .thumb {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.25rem;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+
+  a:hover .thumb img {
+    transform: scale(1.04);
+  }
+
+  .client {
+    margin: 0 0 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+  }
+
+  h3 {
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .summary {
+    color: var(--ink-soft);
+  }
+</style>

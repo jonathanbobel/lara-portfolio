@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Message sent" description="Thanks for getting in touch." hideCta>
+  <section class="wrap thanks">
+    <p class="eyebrow">Message sent</p>
+    <h1>Thank you!</h1>
+    <p class="lede">I got your message and will get back to you as soon as possible.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/work">Keep browsing <span aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost" href="/">Home</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+
+  h1 {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+  }
+
+  .lede {
+    font-size: 1.3rem;
+    color: var(--ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+</style>

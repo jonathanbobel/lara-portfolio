@@ -1,0 +1,11 @@
+# Astro builds a static site: every page is a real folder with an index.html,
+# so no rewrite-to-index rules are needed anymore.
+ErrorDocument 404 /404.html
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Astro fingerprints everything in /_astro, so it can be cached forever.
+  <FilesMatch "^_astro/">
+    ExpiresDefault "access plus 1 year"
+  </FilesMatch>
+</IfModule>
