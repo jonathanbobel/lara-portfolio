@@ -1,47 +1,121 @@
-# larabobel.com
+# Lara Bobel — Portfolio
 
-Lara Bobel's portfolio — a static [Astro](https://astro.build) site.
+Source for [larabobel.com](https://www.larabobel.com), the portfolio of Lara Bobel, creative director.
 
-## Develop
+Built with [Astro](https://astro.build) as a fully static site and deployed on [Vercel](https://vercel.com). There's no CMS or database. Projects are markdown files and images that live in this repo.
+
+## Tech stack
+
+- **Astro 7**: static site generation, content collections, image optimization, view transitions
+- **Plain CSS**: design tokens live in `src/styles/global.css`, and component styles are scoped in each `.astro` file
+- **Fonts**: Rokkitt and Roboto Condensed, self-hosted via Fontsource
+- **Contact form**: [Web3Forms](https://web3forms.com) (no backend needed)
+- **Hosting**: Vercel, which builds and deploys automatically on push
+
+## Getting started
+
+Requires Node 20 or newer.
 
 ```sh
 npm install
-npm run dev       # http://localhost:4321
-npm run build     # outputs static files to dist/
-npm run preview   # serve the built site locally
+cp .env.example .env   # then add the Web3Forms key (see below)
+npm run dev            # http://localhost:4321
 ```
 
-## Where things live
-
-| What | Where |
+| Command | What it does |
 | --- | --- |
-| Portfolio projects | `src/content/work/*.md` (one file per project; images in `src/assets/work/<project>/`) |
-| Case studies | `src/content/case-studies/*.md` — see `README.md.txt` in that folder for a template |
-| Pages (home, about, contact, donations) | `src/pages/` |
-| Nav, footer, cards | `src/components/` |
-| Colors, fonts, shared styles | `src/styles/global.css` |
-| Name, email, LinkedIn, nav links | `src/lib/site.ts` |
-| 2019 annual report flipbook (legacy, self-contained) | `public/2019-annual/` |
+| `npm run dev` | Local dev server with hot reload |
+| `npm run build` | Builds the static site to `dist/` |
+| `npm run preview` | Serves the built `dist/` locally |
+| `npm run check` | Type-checks `.astro` and `.ts` files |
 
-### Adding a project
+## Project structure
 
-1. Make a folder in `src/assets/work/` with a square `cover` image and the project images.
-2. Copy one of the files in `src/content/work/`, rename it (the file name becomes the URL, e.g. `/work/my-project`), and update the frontmatter.
-3. `order` controls position; `featured: true` puts it on the home page (first six are shown).
-   Image `size` can be `full`, `three-quarter`, `half`, or `tile` (two per row). `border: true` adds a hairline frame.
+```
+src/
+├── assets/            # images (optimized at build time)
+│   ├── work/<slug>/   # one folder per portfolio project
+│   ├── about/
+│   └── donations/
+├── components/        # Header, Footer, ProjectCard, CaseStudyCard
+├── content/
+│   ├── work/          # one .md per portfolio project
+│   └── case-studies/  # one .md per case study (empty for now)
+├── layouts/Base.astro # <head>, header, footer, page transitions
+├── lib/
+│   ├── site.ts        # name, title, email, LinkedIn, nav links
+│   └── content.ts     # sorted collection helpers
+├── pages/             # routes: /, /work, /work/[slug], /case-studies, /about, /contact, /donations
+├── styles/global.css  # colors, type, buttons, shared layout
+└── content.config.ts  # frontmatter schemas for work + case studies
+public/
+└── 2019-annual/       # legacy FlowPaper flipbook, served as-is
+```
+
+## Editing content
+
+### Add or update a project
+
+1. Create `src/assets/work/<slug>/` and add a square `cover` image (ideally 800×800 or larger) plus the project images.
+2. Add `src/content/work/<slug>.md`. The filename becomes the URL (`/work/<slug>`). Copy an existing project as a starting point:
+
+   ```yaml
+   ---
+   title: Project name
+   client: Client name
+   year: '2024'                     # optional
+   categories: [Branding, Print]    # Branding | Campaigns | Print | Annual Reports | Events
+   deliverables: [Logo, Business cards]
+   cover: ../../assets/work/<slug>/cover.jpg
+   coverAlt: Short description of the cover image
+   order: 16                        # lower = earlier in the grid
+   featured: true                   # show on the home page (first 6)
+   link:                            # optional button on the project page
+     label: Visit the website
+     href: https://example.com
+   images:
+     - src: ../../assets/work/<slug>/hero.jpg
+       alt: What's in the image
+       size: full                   # full | three-quarter | half | tile (two per row)
+       border: false                # hairline frame for pieces on white
+   ---
+
+   Project description in markdown.
+   ```
+
+3. Run `npm run dev` to check it. If a required field is missing or a category is misspelled, the build fails and tells you which file.
+
+### Add a case study
+
+See `src/content/case-studies/README.md.txt` for a template. Set `draft: true` while writing. Drafts show up in `npm run dev` but not in production. The Case Studies page and the home page section switch from "coming soon" to cards as soon as one is published.
+
+### Site-wide details
+
+The name, title, email, LinkedIn URL, and nav links are all in `src/lib/site.ts`.
 
 ## Contact form
 
-The form sends through [Web3Forms](https://web3forms.com) (free, no server needed):
+The form on `/contact` posts to Web3Forms, which emails each submission to **lara.schmida@gmail.com**.
 
-1. Go to web3forms.com, enter **lara.schmida@gmail.com**, and confirm — you'll be emailed an access key.
-2. Create a `.env` file (see `.env.example`):
-   ```
-   PUBLIC_WEB3FORMS_KEY=your-key-here
-   ```
-3. Rebuild. Without a key the form still renders but tells visitors to email directly.
+1. Get an access key at [web3forms.com](https://web3forms.com) using that email address.
+2. Set it as `PUBLIC_WEB3FORMS_KEY`:
+   - **Locally:** in `.env`
+   - **On Vercel:** Project → Settings → Environment Variables (Production and Preview), then redeploy
 
-## Deploy
+The key is meant to be public, so it's fine that it ends up in the page. Without a key, the form still renders but tells visitors to email directly. Spam is filtered with a honeypot field.
 
-Upload the contents of `dist/` to the web root (it includes `.htaccess` for the 404 page).
-Old `/portfolio/<name>` URLs redirect to `/work/<name>` automatically.
+## Deployment
+
+Vercel builds every push:
+
+- `main` deploys to production (larabobel.com)
+- Other branches and pull requests get preview URLs
+
+Vercel auto-detects the build settings: Astro, `npm run build`, output in `dist/`. No adapter is needed because the site is fully static.
+
+Old AngularJS-era URLs (`/portfolio/<name>`) redirect to `/work/<name>`. The mapping is in `astro.config.mjs`.
+
+## Notes
+
+- **2019 annual report:** `public/2019-annual/` is an old FlowPaper flipbook (jQuery + three.js). It's isolated from the rest of the site. If a PDF of the report turns up, link to that instead and delete the folder.
+- **Thumbnails:** most project covers are 289px squares from the old site. Replacing them with larger exports will sharpen the grid on retina screens.

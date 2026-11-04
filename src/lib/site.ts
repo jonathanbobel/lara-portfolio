@@ -1,8 +1,8 @@
 export const site = {
   name: 'Lara Bobel',
-  role: 'Art Director & Graphic Designer',
+  role: 'Creative Director',
   description:
-    'Lara Bobel is an art director and graphic designer creating brand identities, campaigns, annual reports, and print.',
+    'Lara Bobel is a creative director and designer leading brand identities, campaigns, annual reports, and print.',
   email: 'lara.schmida@gmail.com',
   linkedin: 'https://www.linkedin.com/in/lara-bobel-4788077/',
 };

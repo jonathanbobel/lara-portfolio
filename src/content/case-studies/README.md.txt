@@ -11,7 +11,7 @@ title: Rebranding the YMCA membership campaign
 client: YMCA
 summary: One or two sentences shown on cards and as the page intro.
 year: '2018'                 # optional
-role: Art Director           # optional
+role: Creative Director          # optional
 cover: ../../assets/case-studies/ymca-campaign/cover.jpg
 coverAlt: Describe the cover image
 order: 1                     # lower numbers show first

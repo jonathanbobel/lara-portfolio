@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import CaseStudyCard from '../components/CaseStudyCard.astro';
 import { getCaseStudies, getWork } from '../lib/content';
+import { site } from '../lib/site';
 import portrait from '../assets/about/lara.jpg';
 
 const work = await getWork();
@@ -13,7 +14,7 @@ const caseStudies = (await getCaseStudies()).slice(0, 2);
 
 <Base>
   <section class="hero wrap">
-    <p class="eyebrow">Art Director &amp; Graphic Designer</p>
+    <p class="eyebrow">{site.role}</p>
     <h1>
       Hi, I’m Lara.<br />
       I make brands, campaigns &amp; print that <span class="mark">people notice.</span>
