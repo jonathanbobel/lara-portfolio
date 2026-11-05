@@ -16,12 +16,17 @@ role: Creative Director            # optional
 disciplines: [Brand Strategy, Creative Direction]   # shown above the title
 cover: ../../assets/case-studies/ymca-campaign/cover.jpg
 coverAlt: Describe the cover image
+# No cover? Leave cover/coverAlt out; cards then show `highlight` (or the title) as a typographic panel:
+# highlight: { before: '1–3 weeks', after: 'A few hours', label: 'What changed' }
+# showCover: false               # use the cover on cards only, not at the top of the page
 order: 1                           # lower numbers show first
 draft: true                        # drafts only show up in `npm run dev`
 ---
 
 import DocumentCard from '../../components/DocumentCard.astro';
 import Figure from '../../components/Figure.astro';
+import Stat from '../../components/Stat.astro';         // <Stat before="…" after="…" label="…" />
+import Process from '../../components/Process.astro';   // <Process steps={[{ title: '…', text: '…' }]} />
 import deckPreview from '../../assets/case-studies/ymca-campaign/deck-cover.jpg';
 import photo from '../../assets/case-studies/ymca-campaign/photo.jpg';
 

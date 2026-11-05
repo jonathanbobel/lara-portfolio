@@ -11,12 +11,12 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { study } = Astro.props;
-const { title, client, summary, year, role, disciplines, cover, coverAlt } = study.data;
+const { title, client, summary, year, role, disciplines, cover, coverAlt, showCover } = study.data;
 const { Content } = await render(study);
-const ogImage = await getImage({ src: cover, width: 1200, format: 'jpg' });
+const ogImage = cover ? await getImage({ src: cover, width: 1200, format: 'jpg' }) : undefined;
 ---
 
-<Base title={title} description={summary} image={ogImage.src}>
+<Base title={title} description={summary} image={ogImage?.src}>
   <article class="study">
     <header class="wrap head">
       <a class="arrow-link back" href="/case-studies"><span aria-hidden="true">←</span> All case studies</a>
@@ -47,9 +47,13 @@ const ogImage = await getImage({ src: cover, width: 1200, format: 'jpg' });
       </dl>
     </header>
 
-    <div class="wrap">
-      <Image class="cover" src={cover} alt={coverAlt} widths={[800, 1200, 1800]} sizes="(max-width: 1180px) 100vw, 1100px" loading="eager" />
-    </div>
+    {
+      cover && showCover && (
+        <div class="wrap">
+          <Image class="cover" src={cover} alt={coverAlt ?? ''} widths={[800, 1200, 1800]} sizes="(max-width: 1180px) 100vw, 1100px" loading="eager" />
+        </div>
+      )
+    }
 
     <div class="wrap">
       <div class="prose body">

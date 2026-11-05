@@ -7,14 +7,34 @@ interface Props {
 }
 
 const { study } = Astro.props;
-const { title, client, summary, cover, coverAlt, draft } = study.data;
+const { title, client, summary, cover, coverAlt, highlight, disciplines, draft } = study.data;
+// Very wide covers (e.g. panoramic mock-ups) are fitted rather than cropped.
+const fit = cover && cover.width / cover.height > 1.8 ? 'contain' : 'cover';
 ---
 
 <li class="cs-card">
   <a href={`/case-studies/${study.id}`}>
-    <div class="thumb">
-      <Image src={cover} alt={coverAlt} widths={[480, 960]} sizes="(max-width: 900px) 100vw, 560px" />
-    </div>
+    {
+      cover ? (
+        <div class:list={['thumb', fit]}>
+          <Image src={cover} alt={coverAlt ?? ''} widths={[480, 960]} sizes="(max-width: 900px) 100vw, 560px" />
+        </div>
+      ) : (
+        <div class="thumb type-cover" aria-hidden="true">
+          <span class="tc-tags">{disciplines.join(' · ')}</span>
+          {highlight ? (
+            <span class="tc-stat">
+              <s>{highlight.before}</s>
+              <span class="tc-arrow">→</span>
+              <strong>{highlight.after}</strong>
+              <span class="tc-label">{highlight.label}</span>
+            </span>
+          ) : (
+            <strong class="tc-title">{title}</strong>
+          )}
+        </div>
+      )
+    }
     <p class="client">{client}{draft && ' · Draft'}</p>
     <h3>{title}</h3>
     <p class="summary">{summary}</p>
@@ -45,8 +65,76 @@ const { title, client, summary, cover, coverAlt, draft } = study.data;
     transition: transform 0.6s var(--ease);
   }
 
+  .thumb.contain img {
+    object-fit: contain;
+    padding: 4%;
+  }
+
   a:hover .thumb img {
     transform: scale(1.04);
+  }
+
+  .type-cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background:
+      radial-gradient(circle at 85% 15%, rgb(240 86 34 / 0.35), transparent 45%),
+      var(--ink);
+    color: #f3ede6;
+    transition: background-position 0.6s var(--ease);
+  }
+
+  .tc-tags {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+
+  .tc-stat {
+    display: grid;
+    gap: 0.1rem;
+    font-family: var(--font-display);
+    line-height: 1.05;
+  }
+
+  .tc-stat s {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    color: #8f857b;
+    text-decoration-color: var(--orange);
+    text-decoration-thickness: 3px;
+  }
+
+  .tc-arrow {
+    font-size: 1.4rem;
+    color: var(--orange);
+  }
+
+  .tc-stat strong {
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+    color: #fff;
+  }
+
+  .tc-label {
+    margin-top: 0.4rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: #cfc6bc;
+  }
+
+  .tc-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    line-height: 1.1;
+  }
+
+  a:hover .type-cover {
+    background:
+      radial-gradient(circle at 75% 25%, rgb(240 86 34 / 0.5), transparent 50%),
+      var(--ink);
   }
 
   .client {

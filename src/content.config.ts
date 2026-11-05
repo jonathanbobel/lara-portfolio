@@ -44,8 +44,13 @@ const caseStudies = defineCollection({
       role: z.string().optional(),
       /** Shown as the eyebrow, e.g. Brand Strategy · Creative Direction */
       disciplines: z.array(z.string()).default([]),
-      cover: image(),
-      coverAlt: z.string(),
+      /** Optional. Without a cover, cards show `highlight` as a typographic panel instead. */
+      cover: image().optional(),
+      coverAlt: z.string().optional(),
+      /** Set false to use the cover only on cards (e.g. when the same image appears in the body). */
+      showCover: z.boolean().default(true),
+      /** A headline result, e.g. { before: '1–3 weeks', after: 'a few hours', label: 'from source material to first draft' } */
+      highlight: z.object({ before: z.string(), after: z.string(), label: z.string() }).optional(),
       order: z.number().default(100),
       /** Drafts are skipped in production builds. */
       draft: z.boolean().default(false),
