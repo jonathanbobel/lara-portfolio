@@ -1,30 +1,44 @@
 How to add a case study
 =======================
 
-Create a markdown file in this folder, e.g. `ymca-campaign.md`. The file name becomes
-the URL: /case-studies/ymca-campaign
+See fathom-brand-audit.mdx in this folder for a complete, real example.
 
-Put its images in src/assets/case-studies/<name>/ and reference them relatively.
+1. Create a file here, e.g. `ymca-campaign.mdx`. The file name becomes the URL:
+   /case-studies/ymca-campaign
+2. Put images in src/assets/case-studies/<name>/ and PDFs in public/case-studies/<name>/.
 
 ---
 title: Rebranding the YMCA membership campaign
 client: YMCA
 summary: One or two sentences shown on cards and as the page intro.
-year: '2018'                 # optional
-role: Creative Director          # optional
+year: '2018'                       # optional
+role: Creative Director            # optional
+disciplines: [Brand Strategy, Creative Direction]   # shown above the title
 cover: ../../assets/case-studies/ymca-campaign/cover.jpg
 coverAlt: Describe the cover image
-order: 1                     # lower numbers show first
-draft: true                  # drafts only show up in `npm run dev`
+order: 1                           # lower numbers show first
+draft: true                        # drafts only show up in `npm run dev`
 ---
 
+import DocumentCard from '../../components/DocumentCard.astro';
+import Figure from '../../components/Figure.astro';
+import deckPreview from '../../assets/case-studies/ymca-campaign/deck-cover.jpg';
+import photo from '../../assets/case-studies/ymca-campaign/photo.jpg';
+
 ## The brief
-Write the story in normal markdown. Images:
+Write the story in normal markdown.
 
-![Alt text](../../assets/case-studies/ymca-campaign/photo.jpg)
+<Figure src={photo} alt="What's in the image" caption="Optional caption" wide />
 
-## The process
-...
+<DocumentCard
+  href="/case-studies/ymca-campaign/deck.pdf"
+  title="Campaign Deck"
+  description="What the document is."
+  preview={deckPreview}
+  meta="12 pages"
+/>
 
-## The results
-...
+> Pull quotes start with a ">".
+
+Tip: to make a preview image of a PDF's first page on a Mac, open it in Preview,
+then File → Export… → JPEG.

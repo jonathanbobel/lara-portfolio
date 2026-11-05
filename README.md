@@ -40,7 +40,7 @@ src/
 ├── components/        # Header, Footer, ProjectCard, CaseStudyCard
 ├── content/
 │   ├── work/          # one .md per portfolio project
-│   └── case-studies/  # one .md per case study (empty for now)
+│   └── case-studies/  # one .mdx per case study
 ├── layouts/Base.astro # <head>, header, footer, page transitions
 ├── lib/
 │   ├── site.ts        # name, title, email, LinkedIn, nav links
@@ -87,7 +87,7 @@ public/
 
 ### Add a case study
 
-See `src/content/case-studies/README.md.txt` for a template. Set `draft: true` while writing. Drafts show up in `npm run dev` but not in production. The Case Studies page and the home page section switch from "coming soon" to cards as soon as one is published.
+Case studies are MDX (markdown plus components), so you can drop in figures (`<Figure>`) and linked PDF cards (`<DocumentCard>`). See `src/content/case-studies/fathom-brand-audit.mdx` for a full example and `README.md.txt` in that folder for a template. Images go in `src/assets/case-studies/<name>/` and PDFs in `public/case-studies/<name>/`. Set `draft: true` while writing. Drafts show up in `npm run dev` but not in production. The Case Studies page and the home page section switch from "coming soon" to cards as soon as one is published.
 
 ### Site-wide details
 

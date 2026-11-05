@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import mdx from '@astrojs/mdx';
 
 // Old AngularJS URLs → new routes, so existing links and bookmarks keep working.
 const legacyWork = {
@@ -23,6 +24,7 @@ const legacyWork = {
 export default defineConfig({
   site: 'https://www.larabobel.com',
   trailingSlash: 'ignore',
+  integrations: [mdx()],
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   redirects: {
     ...Object.fromEntries(

@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+  /** Let the image extend past the text column on wide screens. */
+  wide?: boolean;
+}
+
+const { src, alt, caption, wide = false } = Astro.props;
+---
+
+<figure class:list={['figure', { wide }]}>
+  <Image src={src} alt={alt} widths={[720, 1200, 1600]} sizes={wide ? '(max-width: 1180px) 100vw, 1000px' : '(max-width: 760px) 100vw, 672px'} />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .figure {
+    margin: 2.5rem 0;
+  }
+
+  .figure :global(img) {
+    width: 100%;
+    margin: 0 !important;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  @media (min-width: 1100px) {
+    .wide {
+      margin-inline: -9rem;
+    }
+  }
+
+  figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+</style>

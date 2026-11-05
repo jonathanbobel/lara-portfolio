@@ -34,7 +34,7 @@ const work = defineCollection({
 });
 
 const caseStudies = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/case-studies' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/case-studies' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -42,6 +42,8 @@ const caseStudies = defineCollection({
       summary: z.string(),
       year: z.string().optional(),
       role: z.string().optional(),
+      /** Shown as the eyebrow, e.g. Brand Strategy · Creative Direction */
+      disciplines: z.array(z.string()).default([]),
       cover: image(),
       coverAlt: z.string(),
       order: z.number().default(100),
