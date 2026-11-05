@@ -2,14 +2,17 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { site } from '../lib/site';
-import portrait from '../assets/about/lara.jpg';
-
-const experience = [
-  { place: 'Dealer Tire', years: '2011 – 2020', note: 'In-house creative' },
-  { place: 'Antidote Functional Therapies', years: '2017 – 2019', note: 'Brand identity & web' },
-  { place: 'The Adcom Group', years: '2004 – 2019', note: 'Agency creative' },
-  { place: 'Bisig Impact Group', years: 'Summer 2003', note: 'Design' },
-];
+import {
+  headline,
+  traits,
+  experience,
+  software,
+  professionalSkills,
+  managementCourses,
+  education,
+  outsideTheOffice,
+} from '../lib/resume';
+import portrait from '../assets/about/headshot.jpg';
 
 const offers = [
   'Full-time creative leader',
@@ -18,34 +21,26 @@ const offers = [
   'Cohesive pitch and problem solver',
   'Ideation or brainstorm session',
 ];
-
-const interests = [
-  'Backpacking + camping',
-  'OrangeTheory',
-  'Scooters + bicycles',
-  'Snuggling my pets',
-  'Roller-skating',
-  'Cross-stitching',
-  'Journaling',
-  'Birding',
-  'CLE sports',
-  'Local breweries',
-  'Travel',
-];
 ---
 
-<Base title="About" description="Lara Bobel is a creative director. Experience, services, and a bit about life outside of design." image={portrait.src}>
+<Base
+  title="About"
+  description="Lara Bobel is a creative director with 20+ years in brand, content, and integrated marketing — at Fathom, Dealer Tire, and The Adcom Group."
+  image={portrait.src}
+>
   <section class="intro wrap">
     <div class="text">
       <p class="eyebrow">About</p>
       <h1>Hello, I’m Lara.</h1>
-      <p class="lede">
-        I’m a creative director who loves a good brief and a tight deadline. Efficient and
-        deadline-driven, I can exceed any project expectation.
+      <p class="lede">{headline}.</p>
+      <p>
+        I’m the Associate Creative Director at Fathom, an IQVIA business, where I lead brand strategy, content, and
+        integrated marketing — and help the people around me communicate with consistency and confidence.
       </p>
       <p>
-        Whether you have a project, a role, or just want to talk shop, I’m always up for a quick conversation about
-        the services I offer.
+        Before that, I spent nearly a decade as Art Director at Dealer Tire, working with automotive and tire brands from
+        BMW to Michelin, and seven years at The Adcom Group, where I started as an intern and worked my way up to
+        Associate Art Director.
       </p>
       <div class="actions">
         <a class="btn btn-primary" href="/contact">Let’s talk <span aria-hidden="true">→</span></a>
@@ -53,60 +48,122 @@ const interests = [
       </div>
     </div>
     <div class="portrait">
-      <Image src={portrait} alt="Portrait of Lara Bobel" widths={[400, 800]} sizes="(max-width: 860px) 80vw, 420px" loading="eager" />
+      <Image
+        src={portrait}
+        alt="Portrait of Lara Bobel"
+        widths={[400, 696]}
+        sizes="(max-width: 860px) 80vw, 420px"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <section class="traits" aria-label="How I think">
+    <div class="wrap trait-rows">
+      {
+        traits.map((group) => (
+          <ul>
+            {group.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="exp-heading">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Experience</p>
+        <h2 id="exp-heading">Where I’ve been</h2>
+      </div>
+    </div>
+
+    <ol class="jobs">
+      {
+        experience.map((job) => (
+          <li class="job">
+            <div class="when">
+              <span class="years">{job.years}</span>
+            </div>
+            <div class="what">
+              <h3>{job.company}</h3>
+              <p class="title">{job.title}</p>
+              <ul class="highlights">
+                {job.highlights.map((h) => (
+                  <li>
+                    {h.label && <strong>{h.label}: </strong>}
+                    {h.text}
+                  </li>
+                ))}
+              </ul>
+              {job.clients && (
+                <p class="clients">
+                  <span>Clients</span> {job.clients}
+                </p>
+              )}
+              {job.link && (
+                <a class="arrow-link" href={job.link.href}>
+                  {job.link.label} <span aria-hidden="true">→</span>
+                </a>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section band" aria-labelledby="skills-heading">
+    <div class="wrap">
+      <p class="eyebrow">Toolkit</p>
+      <h2 id="skills-heading">Skills &amp; training</h2>
+      <div class="skills">
+        <div>
+          <h3>Professional skills</h3>
+          <ul>{professionalSkills.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div>
+          <h3>Management courses</h3>
+          <ul>{managementCourses.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div>
+          <h3>Software</h3>
+          <ul>{software.map((s) => <li>{s}</li>)}</ul>
+          <h3 class="edu-head">Education</h3>
+          <p class="edu">
+            <strong>{education.degree}</strong><br />{education.school}
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section wrap columns">
     <div>
-      <h2>Experience</h2>
-      <ol class="timeline">
-        {
-          experience.map(({ place, years, note }) => (
-            <li>
-              <span class="years">{years}</span>
-              <strong>{place}</strong>
-              <span class="note">{note}</span>
-            </li>
-          ))
-        }
-      </ol>
-      <h3 class="edu-head">Education</h3>
-      <p class="edu"><strong>BFA, Visual Communication Design</strong><br />Kent State University</p>
-    </div>
-
-    <div>
+      <p class="eyebrow">Work with me</p>
       <h2>What I offer</h2>
       <p>If you answer yes to any of these, reach out and let’s start collaborating! Do you need a…</p>
       <ul class="checks">
         {offers.map((o) => <li>{o}</li>)}
       </ul>
     </div>
-  </section>
 
-  <section class="section band">
-    <div class="wrap off">
-      <div>
-        <p class="eyebrow">Off the clock</p>
-        <h2>When I’m not flexing my creative muscle…</h2>
-        <p>
-          I have a lot of hobbies and interests. I recently started birding, which makes all outdoor activities more
-          fun — and this is just the beginning.
-        </p>
-      </div>
-      <ul class="chips">
-        {interests.map((i) => <li>{i}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  <section class="section wrap give">
     <div>
-      <p class="eyebrow">Giving back</p>
-      <h2>Causes I support</h2>
-      <p>A handful of organizations doing important work. If you’re able, consider supporting them too.</p>
+      <p class="eyebrow">Off the clock</p>
+      <h2>Life outside the office</h2>
+      <p>Birding makes all outdoor activities more fun.</p>
+      <ul class="chips">
+        {outsideTheOffice.map((i) => <li>{i}</li>)}
+      </ul>
+
+      <div class="give">
+        <h3>Causes I support</h3>
+        <p>A handful of organizations doing important work. If you’re able, consider supporting them too.</p>
+        <a class="arrow-link" href="/donations">See the list <span aria-hidden="true">→</span></a>
+      </div>
     </div>
-    <a class="arrow-link" href="/donations">See the list <span aria-hidden="true">→</span></a>
   </section>
 </Base>
 
@@ -121,11 +178,19 @@ const interests = [
 
   h1 {
     font-size: clamp(2.75rem, 7vw, 5rem);
+    margin-bottom: 0.2em;
   }
 
   .lede {
-    font-size: clamp(1.2rem, 2.2vw, 1.45rem);
-    color: var(--ink-soft);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    font-weight: 600;
+    color: var(--orange-deep);
+    line-height: 1.2;
+  }
+
+  .text p:not(.lede):not(.eyebrow) {
+    max-width: 38rem;
   }
 
   .actions {
@@ -155,63 +220,150 @@ const interests = [
     box-shadow: var(--shadow);
   }
 
+  /* ---------- Traits strip ---------- */
+  .traits {
+    background: var(--ink);
+    color: #f3ede6;
+    padding-block: 1.5rem;
+  }
+
+  .trait-rows {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .trait-rows ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+  }
+
+  .trait-rows li:not(:last-child)::after {
+    content: '•';
+    margin-inline: 0.75rem;
+    color: var(--orange);
+  }
+
   h2 {
     font-size: clamp(1.9rem, 4vw, 2.6rem);
   }
 
+  /* ---------- Experience ---------- */
+  .jobs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .job {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 1rem 2.5rem;
+    padding-block: 2.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .job:first-child {
+    border-top: 2px solid var(--ink);
+  }
+
+  .years {
+    position: sticky;
+    top: 6rem;
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--orange-deep);
+  }
+
+  .what h3 {
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    margin-bottom: 0.1rem;
+  }
+
+  .title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .highlights {
+    max-width: 46rem;
+    margin: 0 0 1rem;
+    padding-left: 1.1em;
+  }
+
+  .highlights li {
+    margin-bottom: 0.5rem;
+  }
+
+  .highlights li::marker {
+    color: var(--orange);
+  }
+
+  .clients {
+    max-width: 46rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .clients span {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Skills ---------- */
+  .band {
+    background: var(--orange-tint);
+  }
+
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem clamp(2rem, 5vw, 4rem);
+    margin-top: 1.5rem;
+  }
+
+  .skills h3 {
+    font-size: 1.35rem;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid var(--orange);
+  }
+
+  .skills ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .skills li {
+    padding: 0.3rem 0;
+  }
+
+  .edu-head {
+    margin-top: 2rem;
+  }
+
+  /* ---------- Offer + outside ---------- */
   .columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: clamp(2.5rem, 6vw, 5rem);
-    border-top: 1px solid var(--line);
-  }
-
-  .timeline {
-    list-style: none;
-    margin: 0 0 2rem;
-    padding: 0;
-    border-left: 2px solid var(--line);
-  }
-
-  .timeline li {
-    position: relative;
-    display: grid;
-    padding: 0 0 1.5rem 1.5rem;
-  }
-
-  .timeline li::before {
-    content: '';
-    position: absolute;
-    left: -7px;
-    top: 0.35rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--paper);
-    border: 2px solid var(--orange);
-  }
-
-  .years {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--orange-deep);
-  }
-
-  .timeline strong {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    line-height: 1.2;
-  }
-
-  .note {
-    color: var(--muted);
-  }
-
-  .edu-head {
-    font-size: 1.4rem;
-    margin-bottom: 0.25rem;
   }
 
   .checks {
@@ -245,23 +397,12 @@ const interests = [
     font-size: 0.95rem;
   }
 
-  .band {
-    background: var(--orange-tint);
-  }
-
-  .off {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: center;
-  }
-
   .chips {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
     list-style: none;
-    margin: 0;
+    margin: 0 0 2.5rem;
     padding: 0;
   }
 
@@ -284,22 +425,20 @@ const interests = [
   }
 
   .give {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    justify-content: space-between;
-    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--orange);
+    border-radius: var(--radius);
   }
 
-  .give p:last-child {
-    margin: 0;
-    max-width: 36rem;
+  .give h3 {
+    font-size: 1.5rem;
   }
 
   @media (max-width: 860px) {
     .intro,
-    .columns,
-    .off {
+    .columns {
       grid-template-columns: 1fr;
     }
 
@@ -308,6 +447,25 @@ const interests = [
       max-width: 80%;
       order: -1;
       margin-left: 1rem;
+    }
+
+    .skills {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .job {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .years {
+      position: static;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .skills {
+      grid-template-columns: 1fr;
     }
   }
 </style>

@@ -5,7 +5,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import CaseStudyCard from '../components/CaseStudyCard.astro';
 import { getCaseStudies, getWork } from '../lib/content';
 import { site } from '../lib/site';
-import portrait from '../assets/about/lara.jpg';
+import portrait from '../assets/about/headshot.jpg';
 
 const work = await getWork();
 const featured = work.filter((p) => p.data.featured).slice(0, 6);
@@ -20,7 +20,7 @@ const caseStudies = (await getCaseStudies()).slice(0, 2);
       I make brands, campaigns &amp; print that <span class="mark">people notice.</span>
     </h1>
     <p class="lede">
-      From brand identities to annual reports to photo shoots with twenty-plus models, I lead creative from the first
+      From brand strategy and integrated campaigns to annual reports and photo shoots, I lead creative from the first
       idea to the finished piece.
     </p>
     <div class="actions">
@@ -81,15 +81,15 @@ const caseStudies = (await getCaseStudies()).slice(0, 2);
 
   <section class="section wrap about" aria-labelledby="about-heading">
     <div class="portrait">
-      <Image src={portrait} alt="Lara Bobel" widths={[320, 640]} sizes="(max-width: 760px) 60vw, 320px" />
+      <Image src={portrait} alt="Portrait of Lara Bobel" widths={[320, 640]} sizes="(max-width: 760px) 60vw, 320px" />
     </div>
     <div>
       <p class="eyebrow">About</p>
-      <h2 id="about-heading">Efficient, deadline-driven, and a little bit playful.</h2>
+      <h2 id="about-heading">Energetic creative director + adventure seeker.</h2>
       <p>
-        I’ve spent my career leading creative in-house at Dealer Tire and agency-side at The Adcom Group — designing
-        everything from brand identities to trade show booths. When I’m not designing, I’m probably backpacking, birding,
-        or cheering on a Cleveland team.
+        Today I’m the Associate Creative Director at Fathom, an IQVIA business. Before that, I spent nearly a decade as Art
+        Director at Dealer Tire and seven years at The Adcom Group. When I’m not working, I’m probably adventuring with my
+        family, roller-skating, or out birding.
       </p>
       <a class="arrow-link" href="/about">More about me <span aria-hidden="true">→</span></a>
     </div>

@@ -44,6 +44,7 @@ src/
 ├── layouts/Base.astro # <head>, header, footer, page transitions
 ├── lib/
 │   ├── site.ts        # name, title, email, LinkedIn, nav links
+│   ├── resume.ts      # About page content: experience, skills, hobbies
 │   └── content.ts     # sorted collection helpers
 ├── pages/             # routes: /, /work, /work/[slug], /case-studies, /about, /contact, /donations
 ├── styles/global.css  # colors, type, buttons, shared layout
@@ -91,7 +92,7 @@ Case studies are MDX (markdown plus components), so you can drop in figures (`<F
 
 ### Site-wide details
 
-The name, title, email, LinkedIn URL, and nav links are all in `src/lib/site.ts`.
+The name, title, email, LinkedIn URL, and nav links are all in `src/lib/site.ts`. The About page (experience, skills, training, hobbies) is generated from `src/lib/resume.ts`, which mirrors Lara's resume. Update it when the resume changes.
 
 ## Contact form
 

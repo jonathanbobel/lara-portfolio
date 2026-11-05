@@ -1,7 +1,7 @@
 ---
 title: Antidote Functional Therapies
 client: Antidote Functional Therapies
-year: 2017–2019
+year: 2017–2020
 categories: [Branding]
 deliverables: [Brand identity, Business cards, Social media, Website design]
 cover: ../../assets/work/antidote/cover.jpg
